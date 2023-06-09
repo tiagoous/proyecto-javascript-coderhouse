@@ -1,0 +1,155 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* .........---ANCLAS SUAVES Y SCROLLBAR---......... */
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+
+    /* .........---Background---......... */
+    --gradient: linear-gradient(60deg,
+            rgb(107, 243, 239),
+            rgb(102, 160, 254),
+            rgb(254, 99, 138),
+            rgb(251, 82, 82),
+            rgb(252, 223, 76),
+            rgb(247, 253, 68),
+            rgb(134, 253, 75),
+            rgb(70, 246, 137));
+}
+
+/* .........---ANIMATIONS---......... */
+@keyframes background-moving {
+    0% {
+        background-position: left;
+    }
+
+    100% {
+        background-position: right;
+    }
+}
+
+body {
+    background: var(--gradient);
+    background-size: 400%;
+    animation: background-moving 25s infinite alternate;
+    font-family: "Tusker Grotesk Light";
+    font-size: 2.5rem;
+}
+
+/* .........---Fuentes---......... */
+
+@font-face {
+    font-family: "Tusker Grotesk";
+    src: url("../../fonts/TuskerGrotesk-5500Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Tusker Grotesk Light";
+    src: url("../../fonts/TuskerGrotesk-2600Semibold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Canter Light";
+    src: url("../../fonts/Canter-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Canter Bold";
+    src: url("../../fonts/Canter-Bold.ttf") format("truetype");
+}
+
+/* ...........---Botones Styles---........... */
+.btn {
+    background: turquoise;
+    padding: 0.2em;
+    margin: 0.5em auto;
+    font-family: "Tusker Grotesk";
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: rgb(0, 0, 0);
+    letter-spacing: 0.2rem;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translate(3px);
+    box-shadow: 3px 3px rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.shadow {
+    border-radius: 2px;
+    border: 0.1em solid rgb(0, 0, 0);
+    box-shadow: 0.1em 0.1em rgb(201, 26, 108),
+                0.2em 0.2em rgb(0, 0, 0), 
+                0.3em 0.3em rgb(44, 252, 141), 
+                0.4em 0.4em rgb(0, 0, 0), 
+                0.5em 0.5em rgb(71, 73, 183), 
+                0.6em 0.6em rgb(0, 0, 0);
+}
+section {
+    display: flex;
+    justify-content: center;
+}
+
+#productos {
+    align-items: baseline;
+    background: rgba(200, 200, 200, 0.5);
+    width: 90%;
+}
+
+.producto {
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+}
+
+.producto img {
+    width: 150px;
+}
+
+.carrito__contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#carrito {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 4rem;
+    padding: 1rem;
+}
+
+#carrito th {
+    padding: 1rem;
+}
+
+#carrito td {
+    padding: 1rem;
+}
+
+#carrito img {
+    width: 80px;
+}
+
+.titulo {
+    font-family: "Tusker Grotesk";
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 1em;
+    font-size: 4rem;
+    text-shadow: 1px 1px rgb(0, 0, 0), 2.5px 2.5px rgb(201, 26, 108), 4px 4px rgb(0, 0, 0), 5.5px 5.5px rgb(44, 252, 141), 7px 7px rgb(0, 0, 0), 8.5px 8.5px rgb(252, 215, 44), 10px 10px rgb(0, 0, 0);
+
+}
+
+.color__precio {
+    color: greenyellow;
+}
+
