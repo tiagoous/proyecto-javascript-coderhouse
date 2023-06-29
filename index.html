@@ -17,7 +17,7 @@
             <h3>Bota Gastada</h3>
             <p>Precio: $22000</p>
             <button class="btn shadow"
-                onclick="agregarAlCarrito('Bota Gastada', './multimedia/bota-gastada.jpeg', 22000)">Agregar al
+                onclick="agregarAlCarrito('Bota Gastada', './multimedia/bota-gastada.jpeg', 22000, 1)">Agregar al
                 carrito</button>
         </div>
         <div class="producto">
@@ -25,14 +25,14 @@
             <h3 class="nombre__producto">Bota Marron</h3>
             <p>Precio: $22000</p>
             <button class="btn shadow"
-                onclick="agregarAlCarrito('Bota Marron', './multimedia/bota-marron.jpeg', 22000)">Agregar al
+                onclick="agregarAlCarrito('Bota Marron', './multimedia/bota-marron.jpeg', 22000, 1)">Agregar al
                 carrito</button>
         </div>
         <div class="producto">
             <img src="./multimedia/bota-negra.jpeg" alt="Bota Negra">
             <h3 class="nombre__producto">Bota Negra</h3>
             <p>Precio: $22000</p>
-            <button class="btn shadow" onclick="agregarAlCarrito('Bota Negra', './multimedia/bota-negra.jpeg', 22000)">Agregar
+            <button class="btn shadow" onclick="agregarAlCarrito('Bota Negra', './multimedia/bota-negra.jpeg', 22000, 1)">Agregar
                 al carrito</button>
         </div>
         <div class="producto">
@@ -40,7 +40,7 @@
             <h3 class="nombre__producto">Zapatilla Negra</h3>
             <p>Precio: $18000</p>
             <button class="btn shadow"
-                onclick="agregarAlCarrito('Zapatilla Negra', './multimedia/zapatilla-negra.jpeg', 18000)">Agregar al
+                onclick="agregarAlCarrito('Zapatilla Negra', './multimedia/zapatilla-negra.jpeg', 18000, 1)">Agregar al
                 carrito</button>
         </div>
         <div class="producto">
@@ -48,7 +48,7 @@
             <h3 class="nombre__producto">Zapato Negro</h3>
             <p>Precio: $20000</p>
             <button class="btn shadow"
-                onclick="agregarAlCarrito('Zapato Negro', './multimedia/zapato-negro.jpeg', 20000)">Agregar al
+                onclick="agregarAlCarrito('Zapato Negro', './multimedia/zapato-negro.jpeg', 20000, 1)">Agregar al
                 carrito</button>
         </div>
         <div class="producto">
@@ -56,7 +56,7 @@
             <h3 class="nombre__producto">Botin Negro</h3>
             <p>Precio: $24000</p>
             <button class="btn shadow"
-                onclick="agregarAlCarrito('Botin Negro', './multimedia/botin-negro.jpeg', 24000)">Agregar al
+                onclick="agregarAlCarrito('Botin Negro', './multimedia/botin-negro.jpeg', 24000, 1)">Agregar al
                 carrito</button>
         </div>
     </div>
@@ -69,12 +69,13 @@
                     <th>Producto</th>
                     <th>Nombre</th>
                     <th>Precio</th>
+                    <th>Cantidad</th>
                 </tr>
             </thead>
             <tbody id="carrito-body">
             </tbody>
         </table>
-
+        <div id="total-carrito"></div>
         <button class="btn shadow" onclick="finalizarCompra()">Finalizar Compra</button>
     </div>
     <script src="app.js"></script>
