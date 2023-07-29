@@ -13,10 +13,50 @@ if (carritoLocalStorage) {
 
 // Traer data del DOM
 const nombreUsuarioInput = document.getElementById("nombreUsuario");
+const productosContainer = document.getElementById("productos");
 const opcionLocalidadSelect = document.getElementById("opcionLocalidad");
-const botonCompra = document.getElementById("boton-compra");
 
-// Cambio de localidad
+// Cargar productos.JSON
+fetch("productos.json")
+    .then((response) => response.json())
+    .then((data) => {
+        const productos = data.productos;
+
+        // Generar la lista de productos en el front-end
+        productos.forEach((producto) => {
+            const { nombre, imagen, precio, cantidad } = producto;
+
+            const productoElement = document.createElement("div");
+            productoElement.classList.add("producto");
+
+            productoElement.innerHTML = `
+        <img src="${imagen}" alt="${nombre}">
+        <h3>${nombre}</h3>
+        <p>Precio: $${precio}</p>
+        <button class="btn shadow" onclick="agregarAlCarrito('${nombre}', '${imagen}', ${precio}, ${cantidad})">
+            Agregar al carrito
+        </button>
+        `;
+
+            productosContainer.appendChild(productoElement);
+        });
+    });
+
+// Cargar localidades.JSON
+fetch("localidades.json")
+    .then((response) => response.json())
+    .then((data) => {
+        const localidades = data.localidades;
+
+        // Rellenar el select con las localidades
+        localidades.forEach((localidad) => {
+            const option = document.createElement("option");
+            option.value = localidad.nombre;
+            option.textContent = localidad.nombre;
+            opcionLocalidadSelect.appendChild(option);
+        });
+    });
+
 opcionLocalidadSelect.addEventListener("change", () => {
     opcionLocalidad = opcionLocalidadSelect.value;
 });
@@ -57,7 +97,7 @@ function mostrarCarrito() {
         <td>${nombre}</td>
         <td class="color__precio">$${precio}</td>
         <td>${cantidad}</td>
-        `;
+    `;
 
         carritoBody.appendChild(fila);
     });
@@ -93,6 +133,41 @@ function finalizarCompra() {
     const montoTotalConEnvio = montoTotal + costoEnvio;
 
     if (carrito.length > 0) {
+        // const swalWithBootstrapButtons = Swal.mixin({
+        //     customClass: {
+        //         confirmButton: 'btn btn-success',
+        //         cancelButton: 'btn btn-danger'
+        //     },
+        //     buttonsStyling: false
+        // })
+
+        // swalWithBootstrapButtons.fire({
+        //     title: '¡Gracias ${nombreUsuario} por comprar en nuestra tienda!',
+        //     text: "El total de tu compra es de: $${montoTotal}\n, el envío a ${opcionLocalidad} tiene un costo de: $${costoEnvio}\n, el monto total con envío es de: $${montoTotalConEnvio}... Desea finalizar la compra?",
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonText: 'Si, ya tengo todo lo que quiero!',
+        //     cancelButtonText: 'No, todavia me faltan productos!',
+        //     reverseButtons: true
+        // }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         swalWithBootstrapButtons.fire(
+        //             'Deleted!',
+        //             'Your file has been deleted.',
+        //             'success'
+        //         )
+        //     } else if (
+        //         /* Read more about handling dismissals below */
+        //         result.dismiss === Swal.DismissReason.cancel
+        //     ) {
+        //         swalWithBootstrapButtons.fire(
+        //             'Cancelled',
+        //             'Your imaginary file is safe :)',
+        //             'error'
+        //         )
+        //     }
+        // })
+
         alert(`¡Gracias ${nombreUsuario} por comprar en nuestra tienda!` +
             ` El total de tu compra es de: $${montoTotal}\n` +
             ` El envío a ${opcionLocalidad} tiene un costo de: $${costoEnvio}\n` +
@@ -102,7 +177,7 @@ function finalizarCompra() {
         alert('Tu carrito está vacío. Agrega un producto para finalizar la compra.');
     }
 
-    // Eliminar el carrito del almacenamiento local
+    // Eliminar el carrito del local
     localStorage.removeItem("carrito");
 
     // Reiniciar el carrito y la interfaz

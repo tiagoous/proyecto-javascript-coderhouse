@@ -1,0 +1,40 @@
+{
+    "productos": [
+        {
+            "nombre": "Bota Gastada",
+            "imagen": "./multimedia/bota-gastada.jpeg",
+            "precio": 22000,
+            "cantidad": 1
+        },
+        {
+            "nombre": "Bota Marron",
+            "imagen": "./multimedia/bota-marron.jpeg",
+            "precio": 22000,
+            "cantidad": 1
+        },
+        {
+            "nombre": "Bota Negra",
+            "imagen": "./multimedia/bota-negra.jpeg",
+            "precio": 22000,
+            "cantidad": 1
+        },
+        {
+            "nombre": "Zapatilla Negra",
+            "imagen": "./multimedia/zapatilla-negra.jpeg",
+            "precio": 18000,
+            "cantidad": 1
+        },
+        {
+            "nombre": "Zapato Negro",
+            "imagen": "./multimedia/zapato-negro.jpeg",
+            "precio": 20000,
+            "cantidad": 1
+        },
+        {
+            "nombre": "Botin Negro",
+            "imagen": "./multimedia/botin-negro.jpeg",
+            "precio": 24000,
+            "cantidad": 1
+        }
+    ]
+}

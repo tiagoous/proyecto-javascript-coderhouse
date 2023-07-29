@@ -1,0 +1,28 @@
+{
+    "localidades": [
+        {
+            "nombre": "Carmen de Patagones",
+            "costoEnvio": 200
+        },
+        {
+            "nombre": "Viedma",
+            "costoEnvio": 300
+        },
+        {
+            "nombre": "San Antonio Oeste",
+            "costoEnvio": 800
+        },
+        {
+            "nombre": "Las Grutas",
+            "costoEnvio": 800
+        },
+        {
+            "nombre": "Stroeder",
+            "costoEnvio": 500
+        },
+        {
+            "nombre": "Bahía Blanca",
+            "costoEnvio": 1000
+        }
+    ]
+}
