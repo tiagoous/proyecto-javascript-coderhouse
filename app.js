@@ -16,6 +16,16 @@ const nombreUsuarioInput = document.getElementById("nombreUsuario");
 const productosContainer = document.getElementById("productos");
 const opcionLocalidadSelect = document.getElementById("opcionLocalidad");
 
+function guardarNombreUsuario() {
+    const nombreUsuarioInput = document.getElementById("nombreUsuario");
+    nombreUsuario = nombreUsuarioInput.value;
+    Swal.fire(
+        'Tu Nombre se guardo correctamente',
+        '',
+        'success'
+        )
+}
+
 // Cargar productos.JSON
 fetch("productos.json")
     .then((response) => response.json())
@@ -27,13 +37,14 @@ fetch("productos.json")
             const { nombre, imagen, precio, cantidad } = producto;
 
             const productoElement = document.createElement("div");
-            productoElement.classList.add("producto");
+            productoElement.classList.add("card");
 
             productoElement.innerHTML = `
-        <img src="${imagen}" alt="${nombre}">
-        <h3>${nombre}</h3>
-        <p>Precio: $${precio}</p>
-        <button class="btn shadow" onclick="agregarAlCarrito('${nombre}', '${imagen}', ${precio}, ${cantidad})">
+        <img src="${imagen}" alt="${nombre}" class="img-thumbnail card-img-top">
+        <div class="card-body">
+        <h3 class="card-title">${nombre}</h3>
+        <p class="card-text">Precio: $${precio}</p>
+        <button class="btn btn-outline-primary shadow" onclick="agregarAlCarrito('${nombre}', '${imagen}', ${precio}, ${cantidad})">
             Agregar al carrito
         </button>
         `;
@@ -93,7 +104,7 @@ function mostrarCarrito() {
 
         const fila = document.createElement("tr");
         fila.innerHTML = `
-        <td><img src="${imagen}" alt="${nombre}" width="50"></td>
+        <td><img class="img-thumbnail" src="${imagen}" alt="${nombre}" width="50"></td>
         <td>${nombre}</td>
         <td class="color__precio">$${precio}</td>
         <td>${cantidad}</td>
@@ -115,7 +126,11 @@ function mostrarCarrito() {
 // Función para finalizar la compra
 function finalizarCompra() {
     if (!opcionLocalidad) {
-        alert("Por favor, selecciona una localidad de envío.");
+        Swal.fire(
+            'Por favor, selecciona una localidad de envío.',
+            '',
+            'warning'
+            )
         return;
     }
 
@@ -133,48 +148,47 @@ function finalizarCompra() {
     const montoTotalConEnvio = montoTotal + costoEnvio;
 
     if (carrito.length > 0) {
-        // const swalWithBootstrapButtons = Swal.mixin({
-        //     customClass: {
-        //         confirmButton: 'btn btn-success',
-        //         cancelButton: 'btn btn-danger'
-        //     },
-        //     buttonsStyling: false
-        // })
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
 
-        // swalWithBootstrapButtons.fire({
-        //     title: '¡Gracias ${nombreUsuario} por comprar en nuestra tienda!',
-        //     text: "El total de tu compra es de: $${montoTotal}\n, el envío a ${opcionLocalidad} tiene un costo de: $${costoEnvio}\n, el monto total con envío es de: $${montoTotalConEnvio}... Desea finalizar la compra?",
-        //     icon: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonText: 'Si, ya tengo todo lo que quiero!',
-        //     cancelButtonText: 'No, todavia me faltan productos!',
-        //     reverseButtons: true
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
-        //         swalWithBootstrapButtons.fire(
-        //             'Deleted!',
-        //             'Your file has been deleted.',
-        //             'success'
-        //         )
-        //     } else if (
-        //         /* Read more about handling dismissals below */
-        //         result.dismiss === Swal.DismissReason.cancel
-        //     ) {
-        //         swalWithBootstrapButtons.fire(
-        //             'Cancelled',
-        //             'Your imaginary file is safe :)',
-        //             'error'
-        //         )
-        //     }
-        // })
+        swalWithBootstrapButtons.fire({
+            title: `¡Gracias ${nombreUsuario} por comprar en nuestra tienda!`,
+            text: `El total de tu compra con envío es de: ${montoTotalConEnvio}. Desea finalizar la compra?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, ya tengo todo lo que quiero!',
+            cancelButtonText: 'No, todavia me faltan productos!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire(
+                    'Compra finalizada! Te esperamos de vuelta!',
+                    'Si te gustaron nuestros productos, no dudes en recomendarnos!',
+                    'success'
+                )
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Compra cancelada!',
+                    'Puedes continuar agregando productos al carrito!',
+                    'error'
+                )
+            }
+        })
 
-        alert(`¡Gracias ${nombreUsuario} por comprar en nuestra tienda!` +
-            ` El total de tu compra es de: $${montoTotal}\n` +
-            ` El envío a ${opcionLocalidad} tiene un costo de: $${costoEnvio}\n` +
-            ` El monto total con envío es: $${montoTotalConEnvio}.`
-        );
     } else {
-        alert('Tu carrito está vacío. Agrega un producto para finalizar la compra.');
+        Swal.fire(
+            'Tu carrito está vacío.',
+            'Agrega un producto para finalizar la compra.',
+            'warning'
+            )
     }
 
     // Eliminar el carrito del local
