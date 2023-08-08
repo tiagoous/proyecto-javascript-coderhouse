@@ -16,6 +16,10 @@ const nombreUsuarioInput = document.getElementById("nombreUsuario");
 const productosContainer = document.getElementById("productos");
 const opcionLocalidadSelect = document.getElementById("opcionLocalidad");
 
+opcionLocalidadSelect.addEventListener("change", () => {
+    opcionLocalidad = opcionLocalidadSelect.value;
+});
+
 function guardarNombreUsuario() {
     const nombreUsuarioInput = document.getElementById("nombreUsuario");
     nombreUsuario = nombreUsuarioInput.value;
@@ -23,23 +27,33 @@ function guardarNombreUsuario() {
         'Tu Nombre se guardo correctamente',
         '',
         'success'
-        )
-}
+    );
+};
+
+async function cargarDatosDesdeJSON(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } 
+    catch (error) {
+        console.error("Error al cargar datos desde JSON:", error);
+    };
+};
+
 
 // Cargar productos.JSON
-fetch("productos.json")
-    .then((response) => response.json())
-    .then((data) => {
-        const productos = data.productos;
+async function cargarProductos() {
+    const data = await cargarDatosDesdeJSON("productos.json");
+    const productos = data.productos;
 
-        // Generar la lista de productos en el front-end
-        productos.forEach((producto) => {
-            const { nombre, imagen, precio, cantidad } = producto;
+    productos.forEach((producto) => {
+        const { nombre, imagen, precio, cantidad } = producto;
 
-            const productoElement = document.createElement("div");
-            productoElement.classList.add("card");
+        const productoElement = document.createElement("div");
+        productoElement.classList.add("card");
 
-            productoElement.innerHTML = `
+        productoElement.innerHTML = `
         <img src="${imagen}" alt="${nombre}" class="img-thumbnail card-img-top">
         <div class="card-body">
         <h3 class="card-title">${nombre}</h3>
@@ -49,28 +63,30 @@ fetch("productos.json")
         </button>
         `;
 
-            productosContainer.appendChild(productoElement);
-        });
+        productosContainer.appendChild(productoElement);
     });
+};
 
 // Cargar localidades.JSON
-fetch("localidades.json")
-    .then((response) => response.json())
-    .then((data) => {
-        const localidades = data.localidades;
+async function cargarLocalidades() {
+    const data = await cargarDatosDesdeJSON("localidades.json");
+    const localidades = data.localidades;
 
-        // Rellenar el select con las localidades
-        localidades.forEach((localidad) => {
-            const option = document.createElement("option");
-            option.value = localidad.nombre;
-            option.textContent = localidad.nombre;
-            opcionLocalidadSelect.appendChild(option);
-        });
+    localidades.forEach((localidad) => {
+        const option = document.createElement("option");
+        option.value = localidad.nombre;
+        option.textContent = localidad.nombre;
+        opcionLocalidadSelect.appendChild(option);
     });
+};
 
-opcionLocalidadSelect.addEventListener("change", () => {
-    opcionLocalidad = opcionLocalidadSelect.value;
-});
+
+async function cargarDatos() {
+    await cargarProductos();
+    await cargarLocalidades();
+};
+
+cargarDatos();
 
 // Función para agregar productos al carrito
 function agregarAlCarrito(nombre, imagen, precio, cantidad) {
@@ -87,7 +103,7 @@ function agregarAlCarrito(nombre, imagen, precio, cantidad) {
 
     // Mostrar el carrito
     mostrarCarrito();
-}
+};
 
 // Función para mostrar los productos en el carrito
 function mostrarCarrito() {
@@ -97,7 +113,7 @@ function mostrarCarrito() {
 
     let montoTotal = 0;
 
-    carrito.forEach((producto) => {
+    carrito.forEach((producto, index) => {
         const { nombre, imagen, precio, cantidad } = producto;
         const precioTotal = precio * cantidad;
         montoTotal += precioTotal;
@@ -107,7 +123,12 @@ function mostrarCarrito() {
         <td><img class="img-thumbnail" src="${imagen}" alt="${nombre}" width="50"></td>
         <td>${nombre}</td>
         <td class="color__precio">$${precio}</td>
-        <td>${cantidad}</td>
+        <td>
+            <button class="btn btn-outline-secondary" onclick="restarCantidad(${index})">-</button>
+            ${cantidad}
+            <button class="btn btn-outline-secondary" onclick="sumarCantidad(${index})">+</button>
+        </td>
+        <td><button class="btn btn-danger" onclick="eliminarProducto(${index})">Eliminar</button></td>
     `;
 
         carritoBody.appendChild(fila);
@@ -115,13 +136,34 @@ function mostrarCarrito() {
 
     const filaTotal = document.createElement("tr");
     filaTotal.innerHTML = `
-    <td colspan="2"></td>
+    <td colspan="3"></td>
     <td><strong>Total:</strong></td>
     <td class="color__precio">$${montoTotal}</td>
     `;
 
     carritoBody.appendChild(filaTotal);
-}
+};
+
+// Función para restar, sumar y eliminar producto del carrito
+function restarCantidad(index) {
+    if (carrito[index].cantidad > 1) {
+        carrito[index].cantidad--;
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        mostrarCarrito();
+    }
+};
+
+function sumarCantidad(index) {
+    carrito[index].cantidad++;
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    mostrarCarrito();
+};
+
+function eliminarProducto(index) {
+    carrito.splice(index, 1);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    mostrarCarrito();
+};
 
 // Función para finalizar la compra
 function finalizarCompra() {
@@ -130,7 +172,7 @@ function finalizarCompra() {
             'Por favor, selecciona una localidad de envío.',
             '',
             'warning'
-            )
+        )
         return;
     }
 
@@ -158,7 +200,7 @@ function finalizarCompra() {
 
         swalWithBootstrapButtons.fire({
             title: `¡Gracias ${nombreUsuario} por comprar en nuestra tienda!`,
-            text: `El total de tu compra con envío es de: ${montoTotalConEnvio}. Desea finalizar la compra?`,
+            text: `El total de tu compra con envío es de: $${montoTotalConEnvio}. Desea finalizar la compra?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Si, ya tengo todo lo que quiero!',
@@ -188,7 +230,7 @@ function finalizarCompra() {
             'Tu carrito está vacío.',
             'Agrega un producto para finalizar la compra.',
             'warning'
-            )
+        )
     }
 
     // Eliminar el carrito del local
@@ -197,4 +239,4 @@ function finalizarCompra() {
     // Reiniciar el carrito y la interfaz
     carrito = [];
     mostrarCarrito();
-}
+};
