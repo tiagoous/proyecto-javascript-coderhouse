@@ -124,9 +124,9 @@ function mostrarCarrito() {
         <td>${nombre}</td>
         <td class="color__precio">$${precio}</td>
         <td>
-            <button class="btn btn-outline-secondary" onclick="restarCantidad(${index})">-</button>
+            <button class="btn btn-secondary" onclick="restarCantidad(${index})">-</button>
             ${cantidad}
-            <button class="btn btn-outline-secondary" onclick="sumarCantidad(${index})">+</button>
+            <button class="btn btn-secondary" onclick="sumarCantidad(${index})">+</button>
         </td>
         <td><button class="btn btn-danger" onclick="eliminarProducto(${index})">Eliminar</button></td>
     `;
